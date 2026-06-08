@@ -17,14 +17,14 @@ export default function Home() {
     initial: { opacity: 0, x: -80, filter: "blur(4px)" },
     whileInView: { opacity: 1, x: 0, filter: "blur(0px)" },
     viewport: { once: true, margin: "-100px" },
-    transition: { duration: 1.0, ease: [0.16, 1, 0.3, 1] }
+    transition: { duration: 1.0 }
   };
 
   const slideRight = {
     initial: { opacity: 0, x: 80, filter: "blur(4px)" },
     whileInView: { opacity: 1, x: 0, filter: "blur(0px)" },
     viewport: { once: true, margin: "-100px" },
-    transition: { duration: 1.0, ease: [0.16, 1, 0.3, 1] }
+    transition: { duration: 1.0 }
   };
 
   return (
