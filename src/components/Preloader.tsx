@@ -13,14 +13,14 @@ export default function Preloader() {
     setLoading(true);
     setFade(false);
 
-    // Keep preloader visible for 900ms so it doesn't flash too fast
+    // Keep preloader visible for 1800ms so it doesn't flash too fast and looks premium
     const timeout = setTimeout(() => {
       setFade(true);
       const fadeTimeout = setTimeout(() => {
         setLoading(false);
-      }, 500); // 500ms fade animation duration
+      }, 600); // 600ms fade animation duration
       return () => clearTimeout(fadeTimeout);
-    }, 900);
+    }, 1800);
 
     return () => clearTimeout(timeout);
   }, [pathname]);
@@ -29,7 +29,7 @@ export default function Preloader() {
 
   return (
     <div
-      className={`fixed inset-0 z-[9999] bg-[#0B0F19] flex flex-col items-center justify-center transition-opacity duration-500 ease-in-out ${
+      className={`fixed inset-0 z-[9999] bg-[#0B0F19] flex flex-col items-center justify-center transition-opacity duration-600 ease-in-out ${
         fade ? "opacity-0 pointer-events-none" : "opacity-100"
       }`}
     >
