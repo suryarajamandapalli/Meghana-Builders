@@ -49,6 +49,13 @@ export default function HeroSection() {
     }
   }, []);
 
+  const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
+  const videos = ["/bg-video.mp4", "/2.mp4", "/3.mp4", "/4.mp4"];
+
+  const handleVideoEnded = () => {
+    setCurrentVideoIndex((prev) => (prev + 1) % videos.length);
+  };
+
   return (
     <>
       <section className="relative h-screen w-full bg-black overflow-hidden flex items-center justify-center">
@@ -56,13 +63,14 @@ export default function HeroSection() {
         <div className="absolute inset-0 z-0">
           <motion.div style={{ opacity: overlayOpacity }} className="absolute inset-0 bg-black z-10" />
           <video
+            key={currentVideoIndex}
             autoPlay
             muted
-            loop
             playsInline
+            onEnded={handleVideoEnded}
             className="w-full h-full object-cover"
           >
-            <source src="/bg-video.mp4" type="video/mp4" />
+            <source src={videos[currentVideoIndex]} type="video/mp4" />
           </video>
         </div>
 

@@ -160,14 +160,10 @@ export default function Header() {
               <motion.div key={link.href} variants={navItemVariants}>
                 <Link
                   href={link.href}
-                  className={`py-1.5 px-3.5 relative group overflow-hidden flex items-center justify-center rounded-sm font-semibold tracking-wide border border-transparent hover:border-white/20 dark:hover:border-white/10 transition-colors ${
+                  className={`py-1.5 px-3.5 relative group overflow-hidden flex items-center justify-center rounded-sm font-semibold tracking-wide border border-transparent transition-colors ${
                     pathname === link.href
-                      ? isDarkBg
-                        ? "text-white font-bold"
-                        : "text-[#11385B] dark:text-[#11385B] font-bold"
-                      : isDarkBg
-                      ? "text-white/90 hover:text-white"
-                      : "text-gray-700 hover:text-[#11385B] dark:text-[#11385B]"
+                      ? "text-[#11385B] font-bold"
+                      : "text-[#11385B] hover:text-[#4A9DD4]"
                   }`}
                 >
                   <span className="relative z-10 group-hover:text-white transition-colors duration-300">
