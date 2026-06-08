@@ -143,7 +143,7 @@ export default function Header() {
           {/* Logo */}
           <Link href="/" className="flex items-center gap-3">
             <img
-              src="/logo/FINAL LOGO-02.png"
+              src="/logo/final-logo-02.png"
               alt="Meghana Builders & Developers Logo"
               className={`h-10 md:h-12 w-auto object-contain transition-all duration-300 ${
                 isDark || isDarkBg ? "brightness-0 invert" : ""
@@ -165,11 +165,11 @@ export default function Header() {
                   className={`py-1.5 px-3.5 relative group overflow-hidden flex items-center justify-center rounded-sm font-semibold tracking-wide border border-transparent hover:border-white/20 dark:hover:border-white/10 transition-colors ${
                     pathname === link.href
                       ? isDarkBg
-                        ? "text-white dark:text-sky-400 font-bold"
-                        : "text-primary dark:text-sky-400 font-bold"
+                        ? "text-[#4A9DD4] font-bold"
+                        : "text-primary dark:text-[#4A9DD4] font-bold"
                       : isDarkBg
-                      ? "text-white/80"
-                      : "text-gray-700 dark:text-gray-300"
+                      ? "text-[#4A9DD4]/90 hover:text-[#4A9DD4]"
+                      : "text-gray-700 dark:text-[#4A9DD4]"
                   }`}
                 >
                   <span className="relative z-10 group-hover:text-white transition-colors duration-300">

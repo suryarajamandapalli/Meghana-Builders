@@ -15,7 +15,7 @@ export default function HeroSection() {
   const { scrollY } = useScroll();
   
   // Parallax effects
-  const overlayOpacity = useTransform(scrollY, [0, 600], [0.1, 0.9]);
+  const overlayOpacity = useTransform(scrollY, [0, 600], [0.0, 0.7]);
   const textY = useTransform(scrollY, [0, 600], [0, 200]);
   const textOpacity = useTransform(scrollY, [0, 400], [1, 0]);
 
@@ -62,7 +62,7 @@ export default function HeroSection() {
             playsInline
             className="w-full h-full object-cover"
           >
-            <source src="/BG Video.mp4" type="video/mp4" />
+            <source src="/bg-video.mp4" type="video/mp4" />
           </video>
         </div>
 

@@ -42,13 +42,13 @@ export default function ScrollSequence() {
       },
     });
 
-    // Parallax scrolling of columns
-    tl.to(col1, { yPercent: -20, ease: "none" }, 0);
-    tl.to(col2, { yPercent: 20, ease: "none" }, 0);
-    tl.to(col3, { yPercent: -15, ease: "none" }, 0);
+    // Parallax scrolling of columns over the entire pin duration
+    tl.to(col1, { yPercent: -35, ease: "none", duration: 2.2 }, 0);
+    tl.to(col2, { yPercent: 35, ease: "none", duration: 2.2 }, 0);
+    tl.to(col3, { yPercent: -25, ease: "none", duration: 2.2 }, 0);
 
     // Dim the background images
-    tl.to(overlay, { opacity: 0.88, ease: "power1.inOut" }, 0.05);
+    tl.to(overlay, { opacity: 0.65, ease: "power1.inOut", duration: 2.2 }, 0.05);
 
     // Fade up mission text letter-by-letter
     const charSpans = text.querySelectorAll(".text-char");

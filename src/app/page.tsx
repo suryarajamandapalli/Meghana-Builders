@@ -13,18 +13,18 @@ import TestimonialSlider from "@/components/TestimonialSlider";
 import { motion } from "framer-motion";
 
 export default function Home() {
-  const slideLeft = {
-    initial: { opacity: 0, x: -80, filter: "blur(4px)" },
-    whileInView: { opacity: 1, x: 0, filter: "blur(0px)" },
+  const revealLeft = {
+    initial: { opacity: 0, x: -120, y: 40, scale: 0.9, rotateY: -15, filter: "blur(12px)" },
+    whileInView: { opacity: 1, x: 0, y: 0, scale: 1, rotateY: 0, filter: "blur(0px)" },
     viewport: { once: true, margin: "-100px" },
-    transition: { duration: 1.0 }
+    transition: { duration: 1.2, type: "spring", bounce: 0.3 }
   };
 
-  const slideRight = {
-    initial: { opacity: 0, x: 80, filter: "blur(4px)" },
-    whileInView: { opacity: 1, x: 0, filter: "blur(0px)" },
+  const revealRight = {
+    initial: { opacity: 0, x: 120, y: 40, scale: 0.9, rotateY: 15, filter: "blur(12px)" },
+    whileInView: { opacity: 1, x: 0, y: 0, scale: 1, rotateY: 0, filter: "blur(0px)" },
     viewport: { once: true, margin: "-100px" },
-    transition: { duration: 1.0 }
+    transition: { duration: 1.2, type: "spring", bounce: 0.3 }
   };
 
   return (
@@ -36,27 +36,27 @@ export default function Home() {
       <ScrollSequence />
 
       {/* 3. Local Work Section - Villa Community near Vemulawada Temple */}
-      <motion.div {...slideLeft}>
+      <motion.div {...revealLeft}>
         <LocalWork />
       </motion.div>
 
       {/* 4. Why Meghana - Promise Tabs */}
-      <motion.div {...slideRight}>
+      <motion.div {...revealRight}>
         <CultureTabs />
       </motion.div>
 
       {/* 5. India Map & Office Locations */}
-      <motion.div {...slideLeft}>
+      <motion.div {...revealLeft}>
         <MapSection />
       </motion.div>
 
       {/* 6. Track Record - Stats & Project Highlights */}
-      <motion.div {...slideRight}>
+      <motion.div {...revealRight}>
         <SafetySection />
       </motion.div>
 
       {/* 7. Client Testimonials */}
-      <motion.div {...slideLeft}>
+      <motion.div {...revealLeft}>
         <TestimonialSlider />
       </motion.div>
 
