@@ -16,8 +16,6 @@ export default function HeroSection() {
   
   // Parallax effects
   const overlayOpacity = useTransform(scrollY, [0, 600], [0.0, 0.7]);
-  const textY = useTransform(scrollY, [0, 800], [0, -400]);
-  const textOpacity = useTransform(scrollY, [0, 200, 500, 800], [0, 1, 1, 0]);
 
   useEffect(() => {
     // Scroll indicator pulse
@@ -51,6 +49,20 @@ export default function HeroSection() {
 
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
   const videos = ["/bg-video.mp4", "/2.mp4", "/3.mp4", "/4.mp4"];
+  const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
+
+  useEffect(() => {
+    videoRefs.current.forEach((vid, idx) => {
+      if (vid) {
+        if (idx === currentVideoIndex) {
+          vid.currentTime = 0;
+          vid.play().catch(e => console.log("Autoplay prevented:", e));
+        } else {
+          vid.pause();
+        }
+      }
+    });
+  }, [currentVideoIndex]);
 
   const handleVideoEnded = () => {
     setCurrentVideoIndex((prev) => (prev + 1) % videos.length);
@@ -60,53 +72,56 @@ export default function HeroSection() {
     <>
       <section className="relative h-screen w-full bg-black overflow-hidden flex items-center justify-center">
         {/* Video background */}
-        <div className="absolute inset-0 z-0">
-          <motion.div style={{ opacity: overlayOpacity }} className="absolute inset-0 bg-black z-10" />
-          <video
-            key={currentVideoIndex}
-            autoPlay
-            muted
-            playsInline
-            onEnded={handleVideoEnded}
-            className="w-full h-full object-cover"
-          >
-            <source src={videos[currentVideoIndex]} type="video/mp4" />
-          </video>
+        <div className="absolute inset-0 z-0 bg-black">
+          <motion.div style={{ opacity: overlayOpacity }} className="absolute inset-0 bg-black z-20 pointer-events-none" />
+          {videos.map((src, idx) => (
+            <video
+              key={src}
+              ref={(el) => {
+                videoRefs.current[idx] = el;
+              }}
+              muted
+              playsInline
+              onEnded={idx === currentVideoIndex ? handleVideoEnded : undefined}
+              className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out ${
+                idx === currentVideoIndex ? "opacity-100 z-10" : "opacity-0 z-0"
+              }`}
+            >
+              <source src={src} type="video/mp4" />
+            </video>
+          ))}
         </div>
 
         {/* Grid overlay */}
-        <div className="absolute inset-0 grid grid-cols-4 pointer-events-none z-10 opacity-[0.07]">
+        <div className="absolute inset-0 grid grid-cols-4 pointer-events-none z-30 opacity-[0.07]">
           <div className="border-r border-white h-full" />
           <div className="border-r border-white h-full" />
           <div className="border-r border-white h-full" />
           <div className="h-full" />
         </div>
 
-        {/* Hero Content - Cinema Text Roll */}
-        <div className="absolute inset-0 z-20 flex flex-col justify-center items-center pointer-events-none">
-          <motion.div 
-            style={{ y: textY, opacity: textOpacity }}
-            className="text-center px-6 max-w-5xl mx-auto flex flex-col items-center justify-center mt-32"
-          >
+        {/* Hero Content - Bottom Left Text */}
+        <div className="absolute inset-0 z-40 flex flex-col justify-end items-start pb-24 pl-8 md:pl-16 pointer-events-none">
+          <div className="text-left max-w-3xl">
             <div ref={headlineRef}>
-              <h1 className="text-white text-[clamp(40px,6vw,90px)] font-bold tracking-tight leading-tight mb-6">
+              <h1 className="text-white text-5xl md:text-7xl font-bold tracking-tight leading-tight mb-2">
                 <span className="block overflow-hidden py-1">
                   <span className="block word-inner">{cmsData.heroTitle || "Meghana Builders"}</span>
                 </span>
               </h1>
-              <p className="block overflow-hidden">
-                <span className="block word-inner text-[#4A9DD4] text-2xl md:text-4xl font-semibold tracking-[0.2em] uppercase mb-12">
+              <p className="block overflow-hidden mb-6">
+                <span className="block word-inner text-[#4A9DD4] text-xl md:text-3xl font-semibold tracking-[0.15em] uppercase">
                   {cmsData.heroTagline || "Build your dreams."}
                 </span>
               </p>
             </div>
             
             <div ref={subRef} className="opacity-0 translate-y-6">
-              <p className="text-white/80 text-xl md:text-2xl font-light uppercase tracking-widest">
+              <p className="text-white/80 text-lg md:text-xl font-light uppercase tracking-widest">
                 What do you want to build?
               </p>
             </div>
-          </motion.div>
+          </div>
         </div>
 
         {/* Scroll indicator */}
