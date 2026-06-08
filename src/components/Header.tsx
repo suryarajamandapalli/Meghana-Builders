@@ -60,8 +60,8 @@ export default function Header() {
   // Init theme
   useEffect(() => {
     const saved = localStorage.getItem("meghana-theme");
-    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-    const dark = saved === "dark" || (!saved && prefersDark);
+    // Default to light (false) unless explicitly saved as "dark"
+    const dark = saved === "dark";
     setIsDark(dark);
     document.documentElement.classList.toggle("dark", dark);
   }, []);
