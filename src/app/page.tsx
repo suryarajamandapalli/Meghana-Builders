@@ -4,7 +4,6 @@ import dynamic from "next/dynamic";
 import HeroSection from "@/components/HeroSection";
 
 import ScrollSequence from "@/components/ScrollSequence";
-import CinemaTextSequence from "@/components/CinemaTextSequence";
 import VideoShowcase from "@/components/VideoShowcase";
 import LocalWork from "@/components/LocalWork";
 import CultureTabs from "@/components/CultureTabs";
@@ -34,13 +33,10 @@ export default function Home() {
       {/* 1. Main Hero Section with Autoplay Video & Slide-out drawer */}
       <HeroSection />
 
-      {/* 2. Cinema Text Sequence (rolls up from bottom like end cards) */}
-      <CinemaTextSequence />
-
-      {/* 3. Fullscreen Video Showcase */}
+      {/* 2. Fullscreen Video Showcase */}
       <VideoShowcase />
 
-      {/* 4. Viewport-Locked Parallax Scroll Sequence */}
+      {/* 3. Viewport-Locked Parallax Scroll Sequence */}
       <ScrollSequence />
 
       {/* 3. Local Work Section - Villa Community near Vemulawada Temple */}

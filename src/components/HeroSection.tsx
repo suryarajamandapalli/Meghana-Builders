@@ -16,6 +16,8 @@ export default function HeroSection() {
   
   // Parallax effects
   const overlayOpacity = useTransform(scrollY, [0, 600], [0.0, 0.7]);
+  const textY = useTransform(scrollY, [0, 800], [0, -400]);
+  const textOpacity = useTransform(scrollY, [0, 200, 500, 800], [0, 1, 1, 0]);
 
   useEffect(() => {
     // Scroll indicator pulse
@@ -72,15 +74,38 @@ export default function HeroSection() {
           <div className="h-full" />
         </div>
 
-        {/* Hero Content - Just Scroll Indicator */}
-        <div className="absolute inset-0 z-20 flex flex-col justify-end pb-12 items-center pointer-events-none">
-
-          {/* Scroll indicator */}
-          <div className="flex flex-col items-center mx-auto text-white/40 text-[10px] uppercase tracking-widest font-semibold gap-2">
-            <span>Scroll</span>
-            <div className="relative w-[1px] h-10 bg-white/15 overflow-hidden">
-              <div className="scroll-down-line absolute top-0 left-0 w-full h-4 bg-[#4A9DD4]" />
+        {/* Hero Content - Cinema Text Roll */}
+        <div className="absolute inset-0 z-20 flex flex-col justify-center items-center pointer-events-none">
+          <motion.div 
+            style={{ y: textY, opacity: textOpacity }}
+            className="text-center px-6 max-w-5xl mx-auto flex flex-col items-center justify-center mt-32"
+          >
+            <div ref={headlineRef}>
+              <h1 className="text-white text-[clamp(40px,6vw,90px)] font-bold tracking-tight leading-tight mb-6">
+                <span className="block overflow-hidden py-1">
+                  <span className="block word-inner">{cmsData.heroTitle || "Meghana Builders"}</span>
+                </span>
+              </h1>
+              <p className="block overflow-hidden">
+                <span className="block word-inner text-[#4A9DD4] text-2xl md:text-4xl font-semibold tracking-[0.2em] uppercase mb-12">
+                  {cmsData.heroTagline || "Build your dreams."}
+                </span>
+              </p>
             </div>
+            
+            <div ref={subRef} className="opacity-0 translate-y-6">
+              <p className="text-white/80 text-xl md:text-2xl font-light uppercase tracking-widest">
+                What do you want to build?
+              </p>
+            </div>
+          </motion.div>
+        </div>
+
+        {/* Scroll indicator */}
+        <div className="absolute bottom-12 z-20 left-1/2 -translate-x-1/2 flex flex-col items-center text-white/40 text-[10px] uppercase tracking-widest font-semibold gap-2">
+          <span>Scroll</span>
+          <div className="relative w-[1px] h-10 bg-white/15 overflow-hidden">
+            <div className="scroll-down-line absolute top-0 left-0 w-full h-4 bg-[#4A9DD4]" />
           </div>
         </div>
       </section>

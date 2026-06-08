@@ -163,11 +163,11 @@ export default function Header() {
                   className={`py-1.5 px-3.5 relative group overflow-hidden flex items-center justify-center rounded-sm font-semibold tracking-wide border border-transparent hover:border-white/20 dark:hover:border-white/10 transition-colors ${
                     pathname === link.href
                       ? isDarkBg
-                        ? "text-[#4A9DD4] font-bold"
-                        : "text-primary dark:text-[#4A9DD4] font-bold"
+                        ? "text-white font-bold"
+                        : "text-[#11385B] dark:text-[#11385B] font-bold"
                       : isDarkBg
-                      ? "text-[#4A9DD4]/90 hover:text-[#4A9DD4]"
-                      : "text-gray-700 dark:text-[#4A9DD4]"
+                      ? "text-white/90 hover:text-white"
+                      : "text-gray-700 hover:text-[#11385B] dark:text-[#11385B]"
                   }`}
                 >
                   <span className="relative z-10 group-hover:text-white transition-colors duration-300">
