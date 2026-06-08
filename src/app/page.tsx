@@ -1,6 +1,13 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import HeroSection from "@/components/HeroSection";
+
+// Dynamically import ThreeDBuilding to avoid server-side rendering issues with Three.js
+const ThreeDBuilding = dynamic(() => import("@/components/ThreeDBuilding"), {
+  ssr: false,
+});
+
 import ScrollSequence from "@/components/ScrollSequence";
 import LocalWork from "@/components/LocalWork";
 import CareersSummary from "@/components/CareersSummary";
@@ -14,6 +21,9 @@ export default function Home() {
     <div className="flex flex-col w-full min-h-screen overflow-hidden">
       {/* 1. Main Hero Section with Autoplay Video & Slide-out drawer */}
       <HeroSection />
+
+      {/* 1b. Interactive 3D Villa Building Blueprint Model */}
+      <ThreeDBuilding />
 
       {/* 2. Viewport-Locked Parallax Scroll Sequence with Mission Statement */}
       <ScrollSequence />

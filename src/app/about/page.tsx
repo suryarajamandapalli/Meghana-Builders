@@ -2,58 +2,13 @@
 
 import { Award, ShieldCheck, Landmark } from "lucide-react";
 import { motion } from "framer-motion";
-
-const timelineEvents = [
-  {
-    year: "1997",
-    title: "Company Founded",
-    description:
-      "Meghana Builders & Developers Pvt. Ltd. begins operations in Chicago with a focus on tenant interior general contracting, committed to delivering high-quality commercial spaces.",
-  },
-  {
-    year: "2003",
-    title: "National Footprint",
-    description:
-      "Meghana expands nationally, opening offices in Los Angeles and New York to service Fortune 500 accounts in premier commercial markets.",
-  },
-  {
-    year: "2013",
-    title: "100% Employee Ownership",
-    description:
-      "Meghana transitions into a fully Employee-Owned Company (ESOP). Every employee owner receives a stake in the company, reinforcing a culture of shared accountability.",
-  },
-  {
-    year: "2026",
-    title: "Brand Refresh & Expansion",
-    description:
-      "Unveiled a brand refresh emphasizing momentum and digital coordination. Operating in 8 cities, managing over $5 billion in construction volume annually.",
-  },
-];
-
-const leaders = [
-  {
-    name: "Dave Hall",
-    role: "Chief Executive Officer",
-    description: "Leads Meghana's national corporate strategy, operations, and cultural vision.",
-  },
-  {
-    name: "Sean Brandon",
-    role: "Regional President",
-    description: "Directs East Coast operations, client delivery, and strategic expansions.",
-  },
-  {
-    name: "Tony Rymar",
-    role: "Executive VP - Mission Critical",
-    description: "Coordinates large-scale technical infrastructure and data center project lines.",
-  },
-  {
-    name: "Brian K. Smith",
-    role: "VP - Environmental Health & Safety",
-    description: "Maintains Meghana's industry-leading safety rating and field protocol updates.",
-  },
-];
+import { useCMS } from "@/context/CMSContext";
 
 export default function AboutPage() {
+  const { cmsData } = useCMS();
+  const timelineEvents = cmsData.timelineEvents || [];
+  const leaders = cmsData.leaders || [];
+
   return (
     <div className="bg-white dark:bg-[#0B0F19] text-black dark:text-white min-h-screen pt-32 pb-24 px-6 lg:px-12 transition-colors duration-300">
       <div className="max-w-7xl mx-auto space-y-24">
@@ -70,12 +25,12 @@ export default function AboutPage() {
               About Us
             </span>
             <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight text-black dark:text-white leading-none uppercase">
-              Our Story
+              {cmsData.aboutTitle || "Our Story"}
             </h1>
           </div>
           <div className="lg:col-span-7">
             <p className="text-gray-600 dark:text-gray-300 text-base font-light leading-relaxed">
-              We are a national, employee-owned general contractor managing over $5 billion in projects annually. We combine deep technical experience with a people-first approach. Guided by a strict ethical code and a promise to pursue your perfect project, Meghana is more than a builder. We are a trusted partner.
+              {cmsData.aboutText}
             </p>
           </div>
         </motion.div>
@@ -145,7 +100,7 @@ export default function AboutPage() {
           <div className="relative border-l border-gray-200 dark:border-white/10 ml-4 pl-8 space-y-12">
             {timelineEvents.map((evt, idx) => (
               <motion.div 
-                key={evt.year} 
+                key={`${evt.year}-${idx}`} 
                 className="relative space-y-2"
                 initial={{ opacity: 0, x: -30 }}
                 whileInView={{ opacity: 1, x: 0 }}
@@ -176,7 +131,7 @@ export default function AboutPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {leaders.map((leader, idx) => (
               <motion.div 
-                key={leader.name} 
+                key={`${leader.name}-${idx}`} 
                 className="p-6 border border-gray-100 dark:border-white/10 rounded-sm bg-white dark:bg-[#0d1322] space-y-4 shadow-sm hover:shadow-md transition-all duration-300"
                 initial={{ opacity: 0, y: 40 }}
                 whileInView={{ opacity: 1, y: 0 }}

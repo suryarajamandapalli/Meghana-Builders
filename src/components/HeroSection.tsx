@@ -10,51 +10,11 @@ import { useCMS } from "@/context/CMSContext";
 export default function HeroSection() {
   const { cmsData } = useCMS();
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const [preloadStage, setPreloadStage] = useState<'video' | 'transitioning' | 'hero'>('video');
-  const [isDark, setIsDark] = useState(false);
   const headlineRef = useRef<HTMLHeadingElement>(null);
   const subRef = useRef<HTMLDivElement>(null);
 
-  // Sync theme changes dynamically
   useEffect(() => {
-    const checkDark = () => {
-      setIsDark(document.documentElement.classList.contains("dark"));
-    };
-    
-    checkDark();
-
-    const observer = new MutationObserver(checkDark);
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ["class"],
-    });
-
-    return () => observer.disconnect();
-  }, []);
-
-  // Preloader stage timers
-  useEffect(() => {
-    // 4.2 seconds play time
-    const fadeTimer = setTimeout(() => {
-      setPreloadStage('transitioning');
-    }, 4200);
-
-    // Fade transition complete
-    const endTimer = setTimeout(() => {
-      setPreloadStage('hero');
-    }, 5200);
-
-    return () => {
-      clearTimeout(fadeTimer);
-      clearTimeout(endTimer);
-    };
-  }, []);
-
-  // GSAP Animations when hero is revealed
-  useEffect(() => {
-    if (preloadStage !== 'hero') return;
-
-    // Scroll indicator pulse animation
+    // Scroll indicator pulse
     gsap.to(".scroll-down-line", {
       y: 15,
       repeat: -1,
@@ -66,7 +26,7 @@ export default function HeroSection() {
     // Stagger headline words on mount
     const words = headlineRef.current?.querySelectorAll(".word-inner");
     if (words) {
-      const tl = gsap.timeline({ delay: 0.1 });
+      const tl = gsap.timeline({ delay: 0.3 });
       tl.fromTo(
         words,
         { y: "105%", opacity: 0 },
@@ -81,84 +41,55 @@ export default function HeroSection() {
         );
       }
     }
-  }, [preloadStage]);
+  }, []);
 
   return (
     <>
-      {/* 1. Fullscreen Preloader Overlay */}
-      {preloadStage !== 'hero' && (
-        <div
-          className={`fixed inset-0 z-[100] bg-[#0B0F19] flex flex-col items-center justify-center transition-opacity duration-1000 ease-in-out ${
-            preloadStage === 'transitioning' ? "opacity-0 pointer-events-none" : "opacity-100"
-          }`}
-        >
-          {/* Circular mask showing only the logo spinning, cropping out the right-side text */}
-          <div className="relative w-64 h-64 md:w-80 md:h-80 rounded-full overflow-hidden flex items-center justify-center bg-[#7e7e7e] shadow-2xl border-4 border-white/15">
-            <video
-              autoPlay
-              muted
-              playsInline
-              className="absolute w-[220%] h-[110%] max-w-none object-cover left-[-45%] top-[-5%]"
-            >
-              <source src="/BG Video.mp4" type="video/mp4" />
-            </video>
-          </div>
-          <p className="mt-8 text-white/50 text-[10px] tracking-[0.3em] uppercase font-bold animate-pulse">
-            Meghana Builders
-          </p>
-        </div>
-      )}
-
-      {/* 2. Main Hero Section */}
-      <section className="relative h-screen w-full bg-white dark:bg-[#0B0F19] text-black dark:text-white transition-colors duration-500 overflow-hidden flex items-center justify-center">
-        {/* Large Watermark Monogram behind the text */}
-        <div className="absolute inset-0 flex items-center justify-center z-0 pointer-events-none select-none">
-          <img
-            src="/logo/FINAL LOGO-02.png"
-            alt="Meghana Builders Watermark"
-            className={`w-[85vw] h-[85vw] max-w-[550px] max-h-[550px] object-contain transition-all duration-500 ${
-              isDark ? "brightness-0 invert opacity-[0.06]" : "opacity-[0.035]"
-            }`}
-          />
+      <section className="relative h-screen w-full bg-black overflow-hidden flex items-center justify-center">
+        {/* Video background */}
+        <div className="absolute inset-0 z-0">
+          <div className="absolute inset-0 bg-black/50 z-10" />
+          <video
+            autoPlay
+            muted
+            loop
+            playsInline
+            className="w-full h-full object-cover"
+          >
+            <source src="/BG Video.mp4" type="video/mp4" />
+          </video>
         </div>
 
-        {/* Grid overlay lines */}
-        <div className="absolute inset-0 grid grid-cols-4 pointer-events-none z-10 opacity-[0.04] dark:opacity-[0.08] transition-opacity duration-500">
-          <div className="border-r border-black dark:border-white h-full" />
-          <div className="border-r border-black dark:border-white h-full" />
-          <div className="border-r border-black dark:border-white h-full" />
+        {/* Grid overlay */}
+        <div className="absolute inset-0 grid grid-cols-4 pointer-events-none z-10 opacity-[0.07]">
+          <div className="border-r border-white h-full" />
+          <div className="border-r border-white h-full" />
+          <div className="border-r border-white h-full" />
           <div className="h-full" />
         </div>
 
-        {/* Hero Content Overlay */}
+        {/* Hero Content */}
         <div className="relative z-20 max-w-7xl mx-auto w-full px-6 lg:px-12 flex flex-col justify-between h-full pt-28 pb-12">
           <div className="my-auto space-y-8">
             {/* Main Headline */}
             <div ref={headlineRef}>
-              <h1 className="text-black dark:text-white text-[clamp(36px,5.5vw,80px)] font-bold tracking-tight leading-tight transition-colors duration-500">
+              <h1 className="text-white text-[clamp(36px,5.5vw,80px)] font-bold tracking-tight leading-tight">
                 <span className="block overflow-hidden py-1">
                   <span className="block word-inner">{cmsData.heroTitle}</span>
                 </span>
               </h1>
               <p className="block overflow-hidden">
-                <span 
-                  className="block word-inner text-sm md:text-base font-semibold tracking-[0.2em] uppercase mt-2 transition-colors duration-500"
-                  style={{ color: isDark ? "#38bdf8" : (cmsData.primaryColor || "#11385B") }}
-                >
+                <span className="block word-inner text-[#11385B] text-sm md:text-base font-semibold tracking-[0.2em] uppercase mt-2">
                   {cmsData.heroTagline}
                 </span>
               </p>
             </div>
 
-            {/* Sub CTA Button */}
+            {/* Sub CTA */}
             <div ref={subRef} className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
               <Link
                 href="/projects"
-                className="group inline-flex items-center gap-3 transition-all duration-300 text-base md:text-lg font-medium uppercase tracking-wide border-b-2 pb-2"
-                style={{ 
-                  color: isDark ? "#ffffff" : (cmsData.primaryColor || "#11385B"),
-                  borderColor: isDark ? "rgba(255, 255, 255, 0.3)" : "rgba(17, 56, 91, 0.3)" 
-                }}
+                className="group inline-flex items-center gap-3 text-white hover:text-[#11385B] transition-colors text-base md:text-lg font-medium uppercase tracking-wide border-b-2 border-white/40 hover:border-[#11385B] pb-2"
               >
                 <span>What do you want to build?</span>
                 <ArrowRight className="w-5 h-5 transform group-hover:translate-x-1.5 transition-transform duration-300" />
@@ -166,17 +97,17 @@ export default function HeroSection() {
             </div>
           </div>
 
-          {/* Scroll Down Line Indicator */}
-          <div className="flex flex-col items-center mx-auto text-black/40 dark:text-white/40 text-[10px] uppercase tracking-widest font-semibold gap-2 transition-colors duration-500">
+          {/* Scroll indicator */}
+          <div className="flex flex-col items-center mx-auto text-white/40 text-[10px] uppercase tracking-widest font-semibold gap-2">
             <span>Scroll</span>
-            <div className="relative w-[1px] h-10 bg-black/15 dark:bg-white/15 overflow-hidden">
-              <div className="scroll-down-line absolute top-0 left-0 w-full h-4 bg-primary" />
+            <div className="relative w-[1px] h-10 bg-white/15 overflow-hidden">
+              <div className="scroll-down-line absolute top-0 left-0 w-full h-4 bg-[#4A9DD4]" />
             </div>
           </div>
         </div>
       </section>
 
-      {/* Full-screen Drawer Overlay (Unchanged functionally) */}
+      {/* Full-screen Drawer Overlay */}
       <AnimatePresence>
         {isDrawerOpen && (
           <motion.div
@@ -221,7 +152,7 @@ export default function HeroSection() {
                       className="w-full h-full object-cover object-center transform group-hover:scale-105 transition-transform duration-700"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                    <span className="absolute top-4 left-4 text-xs font-bold uppercase tracking-widest text-sky-400">01</span>
+                    <span className="absolute top-4 left-4 text-xs font-bold uppercase tracking-widest text-[#4A9DD4]">01</span>
                   </div>
                   <div className="p-6 flex flex-col flex-grow space-y-3">
                     <h3 className="text-white text-2xl font-bold tracking-tight">Premium Villas</h3>
@@ -232,7 +163,7 @@ export default function HeroSection() {
                     <Link
                       href="/projects"
                       onClick={() => setIsDrawerOpen(false)}
-                      className="inline-flex items-center gap-2 text-xs uppercase font-bold tracking-widest text-white hover:text-sky-400 transition-colors group/link mt-2"
+                      className="inline-flex items-center gap-2 text-xs uppercase font-bold tracking-widest text-white hover:text-[#4A9DD4] transition-colors group/link mt-2"
                     >
                       <span>View Projects</span>
                       <ArrowRight className="w-4 h-4 group-hover/link:translate-x-1 transition-transform" />
@@ -254,7 +185,7 @@ export default function HeroSection() {
                       className="w-full h-full object-cover object-center transform group-hover:scale-105 transition-transform duration-700"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                    <span className="absolute top-4 left-4 text-xs font-bold uppercase tracking-widest text-sky-400">02</span>
+                    <span className="absolute top-4 left-4 text-xs font-bold uppercase tracking-widest text-[#4A9DD4]">02</span>
                   </div>
                   <div className="p-6 flex flex-col flex-grow space-y-3">
                     <h3 className="text-white text-2xl font-bold tracking-tight">Dream Plots</h3>
@@ -265,7 +196,7 @@ export default function HeroSection() {
                     <Link
                       href="/sectors"
                       onClick={() => setIsDrawerOpen(false)}
-                      className="inline-flex items-center gap-2 text-xs uppercase font-bold tracking-widest text-white hover:text-sky-400 transition-colors group/link mt-2"
+                      className="inline-flex items-center gap-2 text-xs uppercase font-bold tracking-widest text-white hover:text-[#4A9DD4] transition-colors group/link mt-2"
                     >
                       <span>Explore Sectors</span>
                       <ArrowRight className="w-4 h-4 group-hover/link:translate-x-1 transition-transform" />
@@ -287,7 +218,7 @@ export default function HeroSection() {
                       className="w-full h-full object-cover object-center transform group-hover:scale-105 transition-transform duration-700"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                    <span className="absolute top-4 left-4 text-xs font-bold uppercase tracking-widest text-sky-400">03</span>
+                    <span className="absolute top-4 left-4 text-xs font-bold uppercase tracking-widest text-[#4A9DD4]">03</span>
                   </div>
                   <div className="p-6 flex flex-col flex-grow space-y-3">
                     <h3 className="text-white text-2xl font-bold tracking-tight">Partnership</h3>
@@ -298,7 +229,7 @@ export default function HeroSection() {
                     <Link
                       href="/contact"
                       onClick={() => setIsDrawerOpen(false)}
-                      className="inline-flex items-center gap-2 text-xs uppercase font-bold tracking-widest text-white hover:text-sky-400 transition-colors group/link mt-2"
+                      className="inline-flex items-center gap-2 text-xs uppercase font-bold tracking-widest text-white hover:text-[#4A9DD4] transition-colors group/link mt-2"
                     >
                       <span>Collaborate With Us</span>
                       <ArrowRight className="w-4 h-4 group-hover/link:translate-x-1 transition-transform" />

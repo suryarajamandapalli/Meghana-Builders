@@ -3,20 +3,19 @@
 import { useState } from "react";
 import { Send, MapPin, Phone } from "lucide-react";
 import { motion } from "framer-motion";
-
-const offices = [
-  { city: "Chicago", phone: "312-726-6103", address: "10 South Riverside Plaza, Suite 2200" },
-  { city: "Los Angeles", phone: "213-723-1881", address: "725 South Figueroa Street, Suite 300" },
-  { city: "New York", phone: "212-682-1789", address: "655 Third Avenue, 10th Floor" },
-  { city: "Dallas-Fort Worth", phone: "972-972-8403", address: "2100 McKinney Ave, Suite 1401" },
-];
+import { useCMS } from "@/context/CMSContext";
 
 export default function ContactPage() {
+  const { cmsData } = useCMS();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [sector, setSector] = useState("Office");
   const [message, setMessage] = useState("");
   const [isSent, setIsSent] = useState(false);
+
+  const offices = cmsData.offices || [];
+  const contactTitle = cmsData.contactTitle || "Get Started";
+  const contactDescription = cmsData.contactDescription || "";
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -48,12 +47,12 @@ export default function ContactPage() {
               Contact
             </span>
             <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight text-black dark:text-white leading-none uppercase">
-              Get Started
+              {contactTitle}
             </h1>
           </div>
           <div className="lg:col-span-7">
             <p className="text-gray-600 dark:text-gray-400 text-base font-light leading-relaxed">
-              Ready to start your next commercial interior or mission-critical build? Drop us a line below or contact one of our regional offices directly.
+              {contactDescription}
             </p>
           </div>
         </motion.div>
@@ -62,7 +61,7 @@ export default function ContactPage() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
           {/* Form panel (Left 7 Columns) */}
           <motion.div 
-            className="lg:col-span-7 p-8 md:p-12 border border-gray-100 dark:border-white/10 rounded-sm bg-gray-50/50 dark:bg-white/5 shadow-sm"
+            className="lg:col-span-7 p-8 md:p-12 border border-gray-100 dark:border-white/10 rounded-sm bg-gray-55/50 dark:bg-white/5 shadow-sm"
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
@@ -135,7 +134,7 @@ export default function ContactPage() {
               <div className="py-20 text-center space-y-3">
                 <p className="text-primary dark:text-sky-400 text-2xl font-bold">Inquiry Sent Successfully!</p>
                 <p className="text-sm text-gray-500 dark:text-gray-400 font-light max-w-md mx-auto leading-relaxed">
-                  Thank you for contacting Meghana Builders & Developers Pvt. Ltd.. Our regional development team will review your inquiry and get back to you within 24 hours.
+                  Thank you for contacting Meghana Builders. Our regional development team will review your inquiry and get back to you within 24 hours.
                 </p>
               </div>
             )}
@@ -147,14 +146,14 @@ export default function ContactPage() {
             <div className="space-y-6">
               {offices.map((office, idx) => (
                 <motion.div 
-                  key={office.city} 
+                  key={`${office.city}-${idx}`} 
                   className="flex gap-4 items-start pb-6 border-b border-gray-100 dark:border-white/10 last:border-b-0"
                   initial={{ opacity: 0, x: 30 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: idx * 0.1 }}
                 >
-                  <div className="p-3.5 bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/10 rounded-sm shrink-0">
+                  <div className="p-3.5 bg-gray-50/50 dark:bg-white/5 border border-gray-100 dark:border-white/10 rounded-sm shrink-0">
                     <MapPin className="w-5 h-5 text-primary dark:text-sky-400" />
                   </div>
                   <div className="space-y-1">

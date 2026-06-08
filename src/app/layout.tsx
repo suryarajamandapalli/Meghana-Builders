@@ -6,6 +6,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ScrollToTop from "@/components/ScrollToTop";
 import { CMSProvider } from "@/context/CMSContext";
+import Preloader from "@/components/Preloader";
 
 const outfit = Outfit({
   subsets: ["latin"],
@@ -37,6 +38,7 @@ export default function RootLayout({
     <html lang="en" className={`${outfit.variable} h-full antialiased`} suppressHydrationWarning>
       <body className="min-h-full flex flex-col font-sans" suppressHydrationWarning>
         <CMSProvider>
+          <Preloader />
           <SmoothScrollProvider>
             <Header />
             <main className="flex-grow">{children}</main>
