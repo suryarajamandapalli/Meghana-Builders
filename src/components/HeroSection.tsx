@@ -100,24 +100,35 @@ export default function HeroSection() {
           <div className="h-full" />
         </div>
 
+        {/* Radial dark blue gradient overlay for text readability */}
+        <div 
+          className="absolute inset-0 z-30 pointer-events-none"
+          style={{
+            background: "radial-gradient(circle at 15% 85%, rgba(17, 56, 91, 0.6) 0%, rgba(17, 56, 91, 0) 60%)"
+          }}
+        />
+
         {/* Hero Content - Bottom Left Text */}
         <div className="absolute inset-0 z-40 flex flex-col justify-end items-start pb-24 pl-8 md:pl-16 pointer-events-none">
           <div className="text-left max-w-3xl">
             <div ref={headlineRef}>
-              <h1 className="text-white text-5xl md:text-7xl font-bold tracking-tight leading-tight mb-2">
+              <h1 className="text-white text-5xl md:text-7xl font-bold tracking-tight leading-tight mb-2 drop-shadow-md">
                 <span className="block overflow-hidden py-1">
                   <span className="block word-inner">{cmsData.heroTitle || "Meghana Builders"}</span>
                 </span>
               </h1>
               <p className="block overflow-hidden mb-6">
-                <span className="block word-inner text-[#4A9DD4] text-xl md:text-3xl font-semibold tracking-[0.15em] uppercase">
+                <span 
+                  className="block word-inner text-[#11385B] text-xl md:text-3xl font-semibold tracking-[0.15em] uppercase"
+                  style={{ textShadow: "0px 2px 10px rgba(255,255,255,0.7)" }}
+                >
                   {cmsData.heroTagline || "Build your dreams."}
                 </span>
               </p>
             </div>
             
             <div ref={subRef} className="opacity-0 translate-y-6">
-              <p className="text-white/80 text-lg md:text-xl font-light uppercase tracking-widest">
+              <p className="text-white/90 text-lg md:text-xl font-medium uppercase tracking-widest drop-shadow-md">
                 What do you want to build?
               </p>
             </div>
@@ -125,10 +136,10 @@ export default function HeroSection() {
         </div>
 
         {/* Scroll indicator */}
-        <div className="absolute bottom-12 z-20 left-1/2 -translate-x-1/2 flex flex-col items-center text-white/40 text-[10px] uppercase tracking-widest font-semibold gap-2">
+        <div className="absolute bottom-12 z-40 right-12 flex flex-col items-center text-white/60 text-[10px] uppercase tracking-widest font-semibold gap-2">
           <span>Scroll</span>
-          <div className="relative w-[1px] h-10 bg-white/15 overflow-hidden">
-            <div className="scroll-down-line absolute top-0 left-0 w-full h-4 bg-[#4A9DD4]" />
+          <div className="relative w-[1px] h-10 bg-white/30 overflow-hidden">
+            <div className="scroll-down-line absolute top-0 left-0 w-full h-4 bg-[#11385B]" />
           </div>
         </div>
       </section>
