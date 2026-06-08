@@ -104,7 +104,7 @@ export default function HeroSection() {
         <div 
           className="absolute inset-0 z-30 pointer-events-none"
           style={{
-            background: "radial-gradient(circle at 15% 85%, rgba(17, 56, 91, 0.6) 0%, rgba(17, 56, 91, 0) 60%)"
+            background: "radial-gradient(100% 100% at 0% 100%, #11385B 0%, rgba(17, 56, 91, 0.8) 30%, rgba(17, 56, 91, 0.4) 60%, transparent 100%)"
           }}
         />
 

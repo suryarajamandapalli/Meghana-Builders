@@ -4,7 +4,6 @@ import dynamic from "next/dynamic";
 import HeroSection from "@/components/HeroSection";
 
 import ScrollSequence from "@/components/ScrollSequence";
-import VideoShowcase from "@/components/VideoShowcase";
 import LocalWork from "@/components/LocalWork";
 import CultureTabs from "@/components/CultureTabs";
 import MapSection from "@/components/MapSection";
@@ -33,10 +32,7 @@ export default function Home() {
       {/* 1. Main Hero Section with Autoplay Video & Slide-out drawer */}
       <HeroSection />
 
-      {/* 2. Fullscreen Video Showcase */}
-      <VideoShowcase />
-
-      {/* 3. Viewport-Locked Parallax Scroll Sequence */}
+      {/* 2. Viewport-Locked Parallax Scroll Sequence */}
       <ScrollSequence />
 
       {/* 3. Local Work Section - Villa Community near Vemulawada Temple */}
