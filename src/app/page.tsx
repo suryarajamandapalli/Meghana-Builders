@@ -4,6 +4,8 @@ import dynamic from "next/dynamic";
 import HeroSection from "@/components/HeroSection";
 
 import ScrollSequence from "@/components/ScrollSequence";
+import CinemaTextSequence from "@/components/CinemaTextSequence";
+import VideoShowcase from "@/components/VideoShowcase";
 import LocalWork from "@/components/LocalWork";
 import CultureTabs from "@/components/CultureTabs";
 import MapSection from "@/components/MapSection";
@@ -17,14 +19,14 @@ export default function Home() {
     initial: { opacity: 0, x: -120, y: 40, scale: 0.9, rotateY: -15, filter: "blur(12px)" },
     whileInView: { opacity: 1, x: 0, y: 0, scale: 1, rotateY: 0, filter: "blur(0px)" },
     viewport: { once: true, margin: "-100px" },
-    transition: { duration: 1.2, type: "spring", bounce: 0.3 }
+    transition: { duration: 1.2, type: "spring" as const, bounce: 0.3 }
   };
 
   const revealRight = {
     initial: { opacity: 0, x: 120, y: 40, scale: 0.9, rotateY: 15, filter: "blur(12px)" },
     whileInView: { opacity: 1, x: 0, y: 0, scale: 1, rotateY: 0, filter: "blur(0px)" },
     viewport: { once: true, margin: "-100px" },
-    transition: { duration: 1.2, type: "spring", bounce: 0.3 }
+    transition: { duration: 1.2, type: "spring" as const, bounce: 0.3 }
   };
 
   return (
@@ -32,7 +34,13 @@ export default function Home() {
       {/* 1. Main Hero Section with Autoplay Video & Slide-out drawer */}
       <HeroSection />
 
-      {/* 2. Viewport-Locked Parallax Scroll Sequence with Mission Statement */}
+      {/* 2. Cinema Text Sequence (rolls up from bottom like end cards) */}
+      <CinemaTextSequence />
+
+      {/* 3. Fullscreen Video Showcase */}
+      <VideoShowcase />
+
+      {/* 4. Viewport-Locked Parallax Scroll Sequence */}
       <ScrollSequence />
 
       {/* 3. Local Work Section - Villa Community near Vemulawada Temple */}

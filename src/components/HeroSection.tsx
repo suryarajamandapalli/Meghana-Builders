@@ -16,8 +16,6 @@ export default function HeroSection() {
   
   // Parallax effects
   const overlayOpacity = useTransform(scrollY, [0, 600], [0.0, 0.7]);
-  const textY = useTransform(scrollY, [0, 600], [0, 200]);
-  const textOpacity = useTransform(scrollY, [0, 400], [1, 0]);
 
   useEffect(() => {
     // Scroll indicator pulse
@@ -74,34 +72,8 @@ export default function HeroSection() {
           <div className="h-full" />
         </div>
 
-        {/* Hero Content */}
-        <motion.div style={{ y: textY, opacity: textOpacity }} className="relative z-20 max-w-7xl mx-auto w-full px-6 lg:px-12 flex flex-col justify-between h-full pt-28 pb-12">
-          <div className="my-auto space-y-8">
-            {/* Main Headline */}
-            <div ref={headlineRef}>
-              <h1 className="text-white text-[clamp(36px,5.5vw,80px)] font-bold tracking-tight leading-tight">
-                <span className="block overflow-hidden py-1">
-                  <span className="block word-inner">{cmsData.heroTitle}</span>
-                </span>
-              </h1>
-              <p className="block overflow-hidden">
-                <span className="block word-inner text-[#4A9DD4] text-sm md:text-base font-semibold tracking-[0.2em] uppercase mt-2">
-                  {cmsData.heroTagline}
-                </span>
-              </p>
-            </div>
-
-            {/* Sub CTA */}
-            <div ref={subRef} className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-              <Link
-                href="/projects"
-                className="group inline-flex items-center gap-3 text-white hover:text-[#4A9DD4] transition-colors text-base md:text-lg font-medium uppercase tracking-wide border-b-2 border-white/40 hover:border-[#4A9DD4] pb-2"
-              >
-                <span>What do you want to build?</span>
-                <ArrowRight className="w-5 h-5 transform group-hover:translate-x-1.5 transition-transform duration-300" />
-              </Link>
-            </div>
-          </div>
+        {/* Hero Content - Just Scroll Indicator */}
+        <div className="absolute inset-0 z-20 flex flex-col justify-end pb-12 items-center pointer-events-none">
 
           {/* Scroll indicator */}
           <div className="flex flex-col items-center mx-auto text-white/40 text-[10px] uppercase tracking-widest font-semibold gap-2">
@@ -110,7 +82,7 @@ export default function HeroSection() {
               <div className="scroll-down-line absolute top-0 left-0 w-full h-4 bg-[#4A9DD4]" />
             </div>
           </div>
-        </motion.div>
+        </div>
       </section>
 
       {/* Full-screen Drawer Overlay */}
