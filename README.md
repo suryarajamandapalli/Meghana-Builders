@@ -1,36 +1,20 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Meghana Builders & Developers
+
+This is a premium, fully customized [Next.js](https://nextjs.org) web application for **Meghana Builders & Developers Pvt. Ltd.** located in Vemulawada, Telangana, India.
+
+## Key Features
+- **Real-time CMS Control Panel**: Located at `/admin` (password secured), allowing real-time edits of all branding colors, tagline text, page descriptions, timeline milestones, leadership lists, and office locations synced via Firebase Realtime Database.
+- **Interactive 3D Villa Blueprint Model**: A high-end WebGL rendering built with Three.js, reacting to page scrolling and user mouse coordinates.
+- **Website-wide Preloader**: A lightweight custom global preloader screen.
+- **Fully Responsive & Premium Dark Theme**: Beautiful modern aesthetics designed to look spectacular on mobile and desktop screens.
 
 ## Getting Started
 
-First, run the development server:
+First, install the dependencies and run the development server:
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
