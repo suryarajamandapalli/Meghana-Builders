@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { ArrowRight, X } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
 import { gsap } from "gsap";
 import { useCMS } from "@/context/CMSContext";
 
@@ -12,6 +12,12 @@ export default function HeroSection() {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const headlineRef = useRef<HTMLHeadingElement>(null);
   const subRef = useRef<HTMLDivElement>(null);
+  const { scrollY } = useScroll();
+  
+  // Parallax effects
+  const overlayOpacity = useTransform(scrollY, [0, 600], [0.1, 0.9]);
+  const textY = useTransform(scrollY, [0, 600], [0, 200]);
+  const textOpacity = useTransform(scrollY, [0, 400], [1, 0]);
 
   useEffect(() => {
     // Scroll indicator pulse
@@ -48,7 +54,7 @@ export default function HeroSection() {
       <section className="relative h-screen w-full bg-black overflow-hidden flex items-center justify-center">
         {/* Video background */}
         <div className="absolute inset-0 z-0">
-          <div className="absolute inset-0 bg-black/20 z-10" />
+          <motion.div style={{ opacity: overlayOpacity }} className="absolute inset-0 bg-black z-10" />
           <video
             autoPlay
             muted
@@ -69,7 +75,7 @@ export default function HeroSection() {
         </div>
 
         {/* Hero Content */}
-        <div className="relative z-20 max-w-7xl mx-auto w-full px-6 lg:px-12 flex flex-col justify-between h-full pt-28 pb-12">
+        <motion.div style={{ y: textY, opacity: textOpacity }} className="relative z-20 max-w-7xl mx-auto w-full px-6 lg:px-12 flex flex-col justify-between h-full pt-28 pb-12">
           <div className="my-auto space-y-8">
             {/* Main Headline */}
             <div ref={headlineRef}>
@@ -104,7 +110,7 @@ export default function HeroSection() {
               <div className="scroll-down-line absolute top-0 left-0 w-full h-4 bg-[#4A9DD4]" />
             </div>
           </div>
-        </div>
+        </motion.div>
       </section>
 
       {/* Full-screen Drawer Overlay */}

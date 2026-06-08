@@ -13,11 +13,18 @@ import TestimonialSlider from "@/components/TestimonialSlider";
 import { motion } from "framer-motion";
 
 export default function Home() {
-  const fadeUp = {
-    initial: { opacity: 0, y: 40 },
-    whileInView: { opacity: 1, y: 0 },
+  const slideLeft = {
+    initial: { opacity: 0, x: -80, filter: "blur(4px)" },
+    whileInView: { opacity: 1, x: 0, filter: "blur(0px)" },
     viewport: { once: true, margin: "-100px" },
-    transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] }
+    transition: { duration: 1.0, ease: [0.16, 1, 0.3, 1] }
+  };
+
+  const slideRight = {
+    initial: { opacity: 0, x: 80, filter: "blur(4px)" },
+    whileInView: { opacity: 1, x: 0, filter: "blur(0px)" },
+    viewport: { once: true, margin: "-100px" },
+    transition: { duration: 1.0, ease: [0.16, 1, 0.3, 1] }
   };
 
   return (
@@ -29,36 +36,36 @@ export default function Home() {
       <ScrollSequence />
 
       {/* 3. Local Work Section - Villa Community near Vemulawada Temple */}
-      <motion.div {...fadeUp}>
+      <motion.div {...slideLeft}>
         <LocalWork />
       </motion.div>
 
       {/* 4. Why Meghana - Promise Tabs */}
-      <motion.div {...fadeUp}>
+      <motion.div {...slideRight}>
         <CultureTabs />
       </motion.div>
 
       {/* 5. India Map & Office Locations */}
-      <motion.div {...fadeUp}>
+      <motion.div {...slideLeft}>
         <MapSection />
       </motion.div>
 
       {/* 6. Track Record - Stats & Project Highlights */}
-      <motion.div {...fadeUp}>
+      <motion.div {...slideRight}>
         <SafetySection />
       </motion.div>
 
       {/* 7. Client Testimonials */}
-      <motion.div {...fadeUp}>
+      <motion.div {...slideLeft}>
         <TestimonialSlider />
       </motion.div>
 
       {/* 8. Bottom Architectural Banner */}
       <motion.div 
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
+        initial={{ opacity: 0, scale: 1.05 }}
+        whileInView={{ opacity: 1, scale: 1 }}
         viewport={{ once: true }}
-        transition={{ duration: 1.2 }}
+        transition={{ duration: 1.5, ease: "easeOut" }}
         className="w-full relative h-[40vw] min-h-[280px] max-h-[480px] overflow-hidden"
       >
         <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/30 z-10" />
