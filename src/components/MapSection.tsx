@@ -71,7 +71,7 @@ export default function MapSection() {
             <img
               src="/layout-map-horizontal.jpg"
               alt="Meghana Gated Community Master Plan Layout Map"
-              className="w-full h-full object-contain transform group-hover:scale-[1.02] transition-transform duration-500 cursor-pointer"
+              className="w-full h-full object-contain rotate-180 group-hover:scale-[1.02] transition-transform duration-500 cursor-pointer"
               onClick={() => setIsLightboxOpen(true)}
             />
             
@@ -190,7 +190,7 @@ export default function MapSection() {
               <img
                 src="/layout-map-horizontal.jpg"
                 alt="Meghana Master Plan Layout Map"
-                className="max-w-full max-h-[80vh] object-contain rounded-lg shadow-2xl bg-white"
+                className="max-w-full max-h-[80vh] object-contain rotate-180 rounded-lg shadow-2xl bg-white"
               />
               <p className="text-white/70 text-xs md:text-sm mt-4 text-center tracking-wide font-light">
                 Proposed Layout of Sy. No. 3381 - Vemulawada. Gated community layout plan with 100% Vastu compliance.

@@ -1,28 +1,29 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 
 export default function Preloader() {
+  const pathname = usePathname();
   const [loading, setLoading] = useState(true);
   const [fade, setFade] = useState(false);
 
   useEffect(() => {
-    const handleLoad = () => {
-      setFade(true);
-      setTimeout(() => setLoading(false), 500);
-    };
+    // Show preloader on route change
+    setLoading(true);
+    setFade(false);
 
-    if (document.readyState === "complete") {
-      handleLoad();
-    } else {
-      window.addEventListener("load", handleLoad);
-      const timeout = setTimeout(handleLoad, 1500); // 1.5s backup timeout
-      return () => {
-        window.removeEventListener("load", handleLoad);
-        clearTimeout(timeout);
-      };
-    }
-  }, []);
+    // Keep preloader visible for 900ms so it doesn't flash too fast
+    const timeout = setTimeout(() => {
+      setFade(true);
+      const fadeTimeout = setTimeout(() => {
+        setLoading(false);
+      }, 500); // 500ms fade animation duration
+      return () => clearTimeout(fadeTimeout);
+    }, 900);
+
+    return () => clearTimeout(timeout);
+  }, [pathname]);
 
   if (!loading) return null;
 

@@ -2,11 +2,7 @@
 
 import dynamic from "next/dynamic";
 import HeroSection from "@/components/HeroSection";
-
-// Dynamically import ThreeDBuilding to avoid server-side rendering issues with Three.js
-const ThreeDBuilding = dynamic(() => import("@/components/ThreeDBuilding"), {
-  ssr: false,
-});
+import FeaturedBuild from "@/components/FeaturedBuild";
 
 import ScrollSequence from "@/components/ScrollSequence";
 import LocalWork from "@/components/LocalWork";
@@ -22,8 +18,8 @@ export default function Home() {
       {/* 1. Main Hero Section with Autoplay Video & Slide-out drawer */}
       <HeroSection />
 
-      {/* 1b. Interactive 3D Villa Building Blueprint Model */}
-      <ThreeDBuilding />
+      {/* 1b. Featured Build Section (Edifis.ca Style) */}
+      <FeaturedBuild />
 
       {/* 2. Viewport-Locked Parallax Scroll Sequence with Mission Statement */}
       <ScrollSequence />
