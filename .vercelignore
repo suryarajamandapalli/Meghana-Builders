@@ -12,15 +12,15 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# Ignore all large media and document files in the project root only
-/*.mp4
-/*.pdf
-/*.jpeg
-/*.jpg
-/*.png
-/*.txt
-/scratch/
-/LOGO/
+# Ignore all large media and document files in the project root
+*.mp4
+*.pdf
+*.jpeg
+*.jpg
+*.png
+*.txt
+scratch/
+LOGO/
 
 # Ignore Git directory
 .git/

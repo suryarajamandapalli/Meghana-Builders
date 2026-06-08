@@ -79,7 +79,7 @@ export default function HeroSection() {
                 </span>
               </h1>
               <p className="block overflow-hidden">
-                <span className="block word-inner text-[#11385B] text-sm md:text-base font-semibold tracking-[0.2em] uppercase mt-2">
+                <span className="block word-inner text-[#4A9DD4] text-sm md:text-base font-semibold tracking-[0.2em] uppercase mt-2">
                   {cmsData.heroTagline}
                 </span>
               </p>
@@ -89,7 +89,7 @@ export default function HeroSection() {
             <div ref={subRef} className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
               <Link
                 href="/projects"
-                className="group inline-flex items-center gap-3 text-white hover:text-[#11385B] transition-colors text-base md:text-lg font-medium uppercase tracking-wide border-b-2 border-white/40 hover:border-[#11385B] pb-2"
+                className="group inline-flex items-center gap-3 text-white hover:text-[#4A9DD4] transition-colors text-base md:text-lg font-medium uppercase tracking-wide border-b-2 border-white/40 hover:border-[#4A9DD4] pb-2"
               >
                 <span>What do you want to build?</span>
                 <ArrowRight className="w-5 h-5 transform group-hover:translate-x-1.5 transition-transform duration-300" />

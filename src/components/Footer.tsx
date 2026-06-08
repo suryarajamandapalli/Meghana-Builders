@@ -19,7 +19,7 @@ export default function Footer() {
               <img
                 src="/logo/FINAL LOGO-09-white.png"
                 alt="Meghana Builders & Developers Logo"
-                className="h-14 md:h-16 w-auto object-contain"
+                className="h-20 md:h-28 w-auto object-contain"
               />
             </Link>
           </div>

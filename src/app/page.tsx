@@ -2,11 +2,9 @@
 
 import dynamic from "next/dynamic";
 import HeroSection from "@/components/HeroSection";
-import FeaturedBuild from "@/components/FeaturedBuild";
 
 import ScrollSequence from "@/components/ScrollSequence";
 import LocalWork from "@/components/LocalWork";
-import CareersSummary from "@/components/CareersSummary";
 import CultureTabs from "@/components/CultureTabs";
 import MapSection from "@/components/MapSection";
 import SafetySection from "@/components/SafetySection";
@@ -18,17 +16,12 @@ export default function Home() {
       {/* 1. Main Hero Section with Autoplay Video & Slide-out drawer */}
       <HeroSection />
 
-      {/* 1b. Featured Build Section (Edifis.ca Style) */}
-      <FeaturedBuild />
-
       {/* 2. Viewport-Locked Parallax Scroll Sequence with Mission Statement */}
       <ScrollSequence />
 
       {/* 3. Local Work Section - Villa Community near Vemulawada Temple */}
       <LocalWork />
 
-      {/* 4. Company Summary & Villa Project Details */}
-      <CareersSummary />
 
       {/* 5. Why Meghana - Promise Tabs */}
       <CultureTabs />
