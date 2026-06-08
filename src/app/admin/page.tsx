@@ -6,8 +6,10 @@ import { useCMS, CMSData } from "@/context/CMSContext";
 import {
   Lock, Save, LogOut, ArrowLeft, RefreshCw, CheckCircle, AlertCircle,
   Plus, Trash2, Image as ImageIcon, Video, FileText,
-  User, Calendar, Info, Layers, Phone
+  User, Calendar, Info, Layers, Phone, Loader2
 } from "lucide-react";
+import { storage } from "@/lib/firebase";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 export default function AdminPage() {
   const { cmsData, updateCMSData, resetCMSData, isAdmin, login, logout } = useCMS();
@@ -16,6 +18,7 @@ export default function AdminPage() {
   const [saveSuccess, setSaveSuccess] = useState(false);
   const [activeTab, setActiveTab] = useState<"general" | "about" | "sectors" | "contact" | "portfolio">("general");
   const [portfolioTab, setPortfolioTab] = useState<"photos" | "videos" | "brochures">("photos");
+  const [isUploading, setIsUploading] = useState(false);
 
   // Local state for single text fields
   const [form, setForm] = useState({
@@ -49,9 +52,9 @@ export default function AdminPage() {
   const [newOffice, setNewOffice] = useState({ city: "", phone: "", address: "" });
 
   // Portfolio local addition states
-  const [newPhoto, setNewPhoto] = useState({ src: "", alt: "", caption: "", fileBase64: "" });
-  const [newVideo, setNewVideo] = useState({ src: "", thumb: "", title: "", duration: "", videoBase64: "", thumbBase64: "" });
-  const [newBrochure, setNewBrochure] = useState({ title: "", description: "", file: "", thumb: "", pages: "", size: "", fileBase64: "", thumbBase64: "" });
+  const [newPhoto, setNewPhoto] = useState<{ src: string; alt: string; caption: string; fileObj: File | null }>({ src: "", alt: "", caption: "", fileObj: null });
+  const [newVideo, setNewVideo] = useState<{ src: string; thumb: string; title: string; duration: string; videoObj: File | null; thumbObj: File | null }>({ src: "", thumb: "", title: "", duration: "", videoObj: null, thumbObj: null });
+  const [newBrochure, setNewBrochure] = useState<{ title: string; description: string; file: string; thumb: string; pages: string; size: string; fileObj: File | null; thumbObj: File | null }>({ title: "", description: "", file: "", thumb: "", pages: "", size: "", fileObj: null, thumbObj: null });
 
   const handleLoginSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -111,15 +114,7 @@ export default function AdminPage() {
     }
   };
 
-  // Convert File to Base64
-  const fileToBase64 = (file: File): Promise<string> => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => resolve(reader.result as string);
-      reader.onerror = (error) => reject(error);
-    });
-  };
+  // Helpers
 
   // Timeline list operations
   const addTimelineEvent = () => {
@@ -176,7 +171,22 @@ export default function AdminPage() {
   // Portfolio items additions
   const handleAddPhoto = async (e: React.FormEvent) => {
     e.preventDefault();
-    const src = newPhoto.fileBase64 || newPhoto.src || "/meghana-1.jpeg";
+    setIsUploading(true);
+    let src = newPhoto.src || "/meghana-1.jpeg";
+
+    if (newPhoto.fileObj) {
+      try {
+        const fileRef = ref(storage, `portfolio/photos/${Date.now()}_${newPhoto.fileObj.name}`);
+        await uploadBytes(fileRef, newPhoto.fileObj);
+        src = await getDownloadURL(fileRef);
+      } catch (err) {
+        console.error("Upload error:", err);
+        alert("Failed to upload photo to storage. Make sure Firebase Storage rules allow writing.");
+        setIsUploading(false);
+        return;
+      }
+    }
+
     const newItem = {
       src,
       alt: newPhoto.alt || "Uploaded Portfolio Image",
@@ -184,18 +194,41 @@ export default function AdminPage() {
     };
     const updatedPhotos = [...(cmsData.dynamicPhotos || []), newItem];
     updateCMSData({ dynamicPhotos: updatedPhotos });
-    setNewPhoto({ src: "", alt: "", caption: "", fileBase64: "" });
+    setNewPhoto({ src: "", alt: "", caption: "", fileObj: null });
+    setIsUploading(false);
     alert("Photo added to portfolio!");
   };
 
   const handleAddVideo = async (e: React.FormEvent) => {
     e.preventDefault();
-    const src = newVideo.videoBase64 || newVideo.src || "";
-    const thumb = newVideo.thumbBase64 || newVideo.thumb || "/meghana-1.jpeg";
-    if (!src) {
-      alert("Please provide a video file upload or a video URL.");
+    setIsUploading(true);
+    let src = newVideo.src;
+    let thumb = newVideo.thumb || "/meghana-1.jpeg";
+
+    try {
+      if (newVideo.videoObj) {
+        const vidRef = ref(storage, `portfolio/videos/${Date.now()}_${newVideo.videoObj.name}`);
+        await uploadBytes(vidRef, newVideo.videoObj);
+        src = await getDownloadURL(vidRef);
+      }
+      if (newVideo.thumbObj) {
+        const thumbRef = ref(storage, `portfolio/thumbnails/${Date.now()}_${newVideo.thumbObj.name}`);
+        await uploadBytes(thumbRef, newVideo.thumbObj);
+        thumb = await getDownloadURL(thumbRef);
+      }
+    } catch (err) {
+      console.error("Upload error:", err);
+      alert("Failed to upload video assets.");
+      setIsUploading(false);
       return;
     }
+
+    if (!src) {
+      alert("Please provide a video file upload or a video URL.");
+      setIsUploading(false);
+      return;
+    }
+
     const newItem = {
       src,
       thumb,
@@ -204,29 +237,52 @@ export default function AdminPage() {
     };
     const updatedVideos = [...(cmsData.dynamicVideos || []), newItem];
     updateCMSData({ dynamicVideos: updatedVideos });
-    setNewVideo({ src: "", thumb: "", title: "", duration: "", videoBase64: "", thumbBase64: "" });
+    setNewVideo({ src: "", thumb: "", title: "", duration: "", videoObj: null, thumbObj: null });
+    setIsUploading(false);
     alert("Video added to portfolio!");
   };
 
   const handleAddBrochure = async (e: React.FormEvent) => {
     e.preventDefault();
-    const file = newBrochure.fileBase64 || newBrochure.file || "";
-    const thumb = newBrochure.thumbBase64 || newBrochure.thumb || "/meghana-1.jpeg";
-    if (!file) {
+    setIsUploading(true);
+    let fileUrl = newBrochure.file;
+    let thumb = newBrochure.thumb || "/meghana-1.jpeg";
+
+    try {
+      if (newBrochure.fileObj) {
+        const pdfRef = ref(storage, `portfolio/brochures/${Date.now()}_${newBrochure.fileObj.name}`);
+        await uploadBytes(pdfRef, newBrochure.fileObj);
+        fileUrl = await getDownloadURL(pdfRef);
+      }
+      if (newBrochure.thumbObj) {
+        const thumbRef = ref(storage, `portfolio/thumbnails/${Date.now()}_${newBrochure.thumbObj.name}`);
+        await uploadBytes(thumbRef, newBrochure.thumbObj);
+        thumb = await getDownloadURL(thumbRef);
+      }
+    } catch (err) {
+      console.error("Upload error:", err);
+      alert("Failed to upload brochure assets.");
+      setIsUploading(false);
+      return;
+    }
+
+    if (!fileUrl) {
       alert("Please upload a PDF file or enter a PDF file path.");
+      setIsUploading(false);
       return;
     }
     const newItem = {
       title: newBrochure.title || "Project Brochure",
       description: newBrochure.description || "Specifications, floor plans, and layouts.",
-      file,
+      file: fileUrl,
       thumb,
       pages: newBrochure.pages || "Multi-page",
       size: newBrochure.size || "~2 MB",
     };
     const updatedBrochures = [...(cmsData.dynamicBrochures || []), newItem];
     updateCMSData({ dynamicBrochures: updatedBrochures });
-    setNewBrochure({ title: "", description: "", file: "", thumb: "", pages: "", size: "", fileBase64: "", thumbBase64: "" });
+    setNewBrochure({ title: "", description: "", file: "", thumb: "", pages: "", size: "", fileObj: null, thumbObj: null });
+    setIsUploading(false);
     alert("PDF Brochure added to portfolio!");
   };
 
@@ -1081,11 +1137,10 @@ export default function AdminPage() {
                         <input
                           type="file"
                           accept="image/*"
-                          onChange={async (e) => {
+                          onChange={(e) => {
                             const file = e.target.files?.[0];
                             if (file) {
-                              const base64 = await fileToBase64(file);
-                              setNewPhoto({ ...newPhoto, fileBase64: base64 });
+                              setNewPhoto({ ...newPhoto, fileObj: file });
                             }
                           }}
                           className="w-full text-xs text-gray-500"
@@ -1105,9 +1160,11 @@ export default function AdminPage() {
                     <button
                       type="button"
                       onClick={handleAddPhoto}
-                      className="px-4 py-2 bg-[#11385B] text-white text-xs font-semibold uppercase tracking-wider rounded cursor-pointer"
+                      disabled={isUploading}
+                      className="px-4 py-2 bg-[#11385B] text-white text-xs font-semibold uppercase tracking-wider rounded cursor-pointer disabled:opacity-50 flex items-center justify-center gap-2"
                     >
-                      Add Photo
+                      {isUploading && <Loader2 className="w-4 h-4 animate-spin" />}
+                      {isUploading ? "Uploading..." : "Add Photo"}
                     </button>
                   </div>
 
@@ -1166,11 +1223,10 @@ export default function AdminPage() {
                         <input
                           type="file"
                           accept="video/*"
-                          onChange={async (e) => {
+                          onChange={(e) => {
                             const file = e.target.files?.[0];
                             if (file) {
-                              const base64 = await fileToBase64(file);
-                              setNewVideo({ ...newVideo, videoBase64: base64 });
+                              setNewVideo({ ...newVideo, videoObj: file });
                             }
                           }}
                           className="text-xs text-gray-500 mb-2"
@@ -1188,11 +1244,10 @@ export default function AdminPage() {
                         <input
                           type="file"
                           accept="image/*"
-                          onChange={async (e) => {
+                          onChange={(e) => {
                             const file = e.target.files?.[0];
                             if (file) {
-                              const base64 = await fileToBase64(file);
-                              setNewVideo({ ...newVideo, thumbBase64: base64 });
+                              setNewVideo({ ...newVideo, thumbObj: file });
                             }
                           }}
                           className="text-xs text-gray-500 mb-2"
@@ -1209,9 +1264,11 @@ export default function AdminPage() {
                     <button
                       type="button"
                       onClick={handleAddVideo}
-                      className="px-4 py-2 bg-[#11385B] text-white text-xs font-semibold uppercase tracking-wider rounded cursor-pointer"
+                      disabled={isUploading}
+                      className="px-4 py-2 bg-[#11385B] text-white text-xs font-semibold uppercase tracking-wider rounded cursor-pointer disabled:opacity-50 flex items-center justify-center gap-2"
                     >
-                      Add Video
+                      {isUploading && <Loader2 className="w-4 h-4 animate-spin" />}
+                      {isUploading ? "Uploading..." : "Add Video"}
                     </button>
                   </div>
 
@@ -1270,11 +1327,10 @@ export default function AdminPage() {
                         <input
                           type="file"
                           accept="application/pdf"
-                          onChange={async (e) => {
+                          onChange={(e) => {
                             const file = e.target.files?.[0];
                             if (file) {
-                              const base64 = await fileToBase64(file);
-                              setNewBrochure({ ...newBrochure, fileBase64: base64, size: `~${(file.size / (1024 * 1024)).toFixed(1)} MB` });
+                              setNewBrochure({ ...newBrochure, fileObj: file, size: `~${(file.size / (1024 * 1024)).toFixed(1)} MB` });
                             }
                           }}
                           className="text-xs text-gray-500 mb-2"
@@ -1292,11 +1348,10 @@ export default function AdminPage() {
                         <input
                           type="file"
                           accept="image/*"
-                          onChange={async (e) => {
+                          onChange={(e) => {
                             const file = e.target.files?.[0];
                             if (file) {
-                              const base64 = await fileToBase64(file);
-                              setNewBrochure({ ...newBrochure, thumbBase64: base64 });
+                              setNewBrochure({ ...newBrochure, thumbObj: file });
                             }
                           }}
                           className="text-xs text-gray-500 mb-2"
@@ -1330,9 +1385,11 @@ export default function AdminPage() {
                     <button
                       type="button"
                       onClick={handleAddBrochure}
-                      className="px-4 py-2 bg-[#11385B] text-white text-xs font-semibold uppercase tracking-wider rounded cursor-pointer"
+                      disabled={isUploading}
+                      className="px-4 py-2 bg-[#11385B] text-white text-xs font-semibold uppercase tracking-wider rounded cursor-pointer disabled:opacity-50 flex items-center justify-center gap-2"
                     >
-                      Add PDF Brochure
+                      {isUploading && <Loader2 className="w-4 h-4 animate-spin" />}
+                      {isUploading ? "Uploading..." : "Add PDF Brochure"}
                     </button>
                   </div>
 

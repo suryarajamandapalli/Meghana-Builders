@@ -48,7 +48,7 @@ export default function HeroSection() {
       <section className="relative h-screen w-full bg-black overflow-hidden flex items-center justify-center">
         {/* Video background */}
         <div className="absolute inset-0 z-0">
-          <div className="absolute inset-0 bg-black/50 z-10" />
+          <div className="absolute inset-0 bg-black/20 z-10" />
           <video
             autoPlay
             muted
