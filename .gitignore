@@ -39,3 +39,13 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Large duplicate files in root
+/*.mp4
+/*.pdf
+/*.jpeg
+/*.jpg
+/*.png
+/*.txt
+/scratch/
+/LOGO/
